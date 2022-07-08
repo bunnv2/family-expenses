@@ -10,9 +10,20 @@
           type="button"
           href="admin/add-family"
         >Add family</a>
+        <a
+          class="btn btn-outline-dark"
+          type="button"
+          href="admin/add-members"
+        >Add family member</a>
         <a class="btn btn-outline-dark" type="button" href="/add-budget">Add
           budget</a>
       </div>
     </div>
   </div>
 </div>
+
+{{#if message}}
+  <script>
+    alert({{message}});
+  </script>
+{{/if}}

@@ -7,11 +7,36 @@ const Person = require("../models/Person");
 router.get("/", (req, res) => {
   res.render("admin-panel");
 });
+
+// ADD FAMILY MEMBERS ROUTES
+router.get("/add-members", (req, res) => {
+  const families = Family.find({})
+    .lean()
+    .then((families) => {
+      res.render("add-members", { families });
+    });
+});
+
+router.post("/add-members", async (req, res) => {
+  console.log(req.body);
+  const family = await Family.findById(req.body.family);
+  const newPerson = new Person({
+    name: req.body.name,
+    lastName: req.body.lastName,
+    Family: family._id,
+  });
+  try {
+    await newPerson.save();
+    return res.redirect("/admin");
+  } catch (err) {
+    console.log(err);
+    return res.redirect("/admin");
+  }
+});
+// ADDING FAMILY ROUTES
 router.get("/add-family", (req, res) => {
   res.render("add-family");
 });
-
-// ADDING FAMILY VIEW
 router.post("/add-family", async (req, res) => {
   //add family to db
   if (req.body.budget < 0) {
@@ -37,6 +62,7 @@ router.post("/add-family", async (req, res) => {
     await newPerson.save();
   } catch (err) {
     res.json({ message: err });
+    return;
   }
   res.redirect("/admin");
 });
