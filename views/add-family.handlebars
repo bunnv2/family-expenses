@@ -1,0 +1,52 @@
+<div class="inner cover position-absolute top-50 start-50 translate-middle">
+  <div class="container center">
+    <div class="row">
+      <h1 class="display-4">You are at adding family form!</h1>
+    </div>
+    <div class="row">
+      <form class="g-1" method="POST">
+        <h1 class="display-5" style="font-size: 24px;">Add first member</h1>
+        <p class="lead">Your lastname will be used as the family name</p>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            required="True"
+            class="form-control"
+            name="name"
+            placeholder="Enter name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Lastname</label>
+          <input
+            type="text"
+            required="True"
+            class="form-control"
+            name="lastName"
+            placeholder="Enter Lastname"
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Budget</label>
+          <input
+            type="number"
+            required="True"
+            class="form-control"
+            name="budget"
+            placeholder="Enter budget"
+          />
+        </div>
+        <br />
+        {{#if message}}
+          <div class="alert alert-danger">{{message}}</div>
+        {{/if}}
+        <br />
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-outline-dark">Add Family</button>
+          <a class="btn btn-outline-dark" type="button" href="/admin">Back</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

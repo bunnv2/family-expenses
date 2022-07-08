@@ -8,6 +8,7 @@ require("dotenv/config");
 
 // bodyparser setup
 const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // view engine setup
@@ -25,9 +26,10 @@ mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () =>
 
 // routes setup
 homeRoute = require("./routes/home");
+adminRoute = require("./routes/admin-panel");
 
 app.use("/", homeRoute);
-
+app.use("/admin", adminRoute);
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
