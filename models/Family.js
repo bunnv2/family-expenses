@@ -20,4 +20,5 @@ FamilySchema.post("remove", function (next) {
   });
   next();
 });
+
 module.exports = mongoose.model("Families", FamilySchema);

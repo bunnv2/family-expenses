@@ -9,12 +9,9 @@ router.get("/", (req, res) => {
 });
 
 // ADD FAMILY MEMBERS ROUTES
-router.get("/add-members", (req, res) => {
-  const families = Family.find({})
-    .lean()
-    .then((families) => {
-      res.render("add-members", { families });
-    });
+router.get("/add-members", async (req, res) => {
+  const families = await Family.find({}).lean();
+  res.render("add-members", { families });
 });
 
 router.post("/add-members", async (req, res) => {
@@ -33,10 +30,12 @@ router.post("/add-members", async (req, res) => {
     return res.redirect("/admin");
   }
 });
+
 // ADDING FAMILY ROUTES
 router.get("/add-family", (req, res) => {
   res.render("add-family");
 });
+
 router.post("/add-family", async (req, res) => {
   //add family to db
   if (req.body.budget < 0) {
@@ -66,4 +65,11 @@ router.post("/add-family", async (req, res) => {
   }
   res.redirect("/admin");
 });
+
+// ADDING FAMILY BUDGET
+router.get("/add-budget", async (req, res) => {
+  const families = await Family.find({}).lean();
+  res.render("add-budget", { families });
+});
+
 module.exports = router;

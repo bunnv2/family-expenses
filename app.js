@@ -20,9 +20,13 @@ app.use(express.static("public"));
 
 // mongoose setup
 const mongoose = require("mongoose");
-mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () =>
-  console.log("connected to db")
-);
+try {
+  mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () =>
+    console.log("connected to db")
+  );
+} catch (err) {
+  console.log(err);
+}
 
 // routes setup
 homeRoute = require("./routes/home");
