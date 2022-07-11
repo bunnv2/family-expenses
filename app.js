@@ -17,7 +17,6 @@ app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", "./views");
 app.use(express.static("public"));
-
 // mongoose setup
 const mongoose = require("mongoose");
 try {
