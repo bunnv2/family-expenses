@@ -8,20 +8,22 @@
         <h1 class="display-5" style="font-size: 24px;">Make them rich... or not
           😁</h1>
         <p class="lead">Choose family from dropdown.</p>
-          <select class="form-select" name="family">
+          <select class="form-select" id="familySelect" name="family">
             <option value="">Select family</option>
             {{#each families}}
-              <option name="family" value="{{this._id}}">{{this.name}}</option>
+              <option name="family" value="{{this._id}}:{{this.budget}}">{{this.name}}</option>
             {{/each}}
           </select>
           <br>
-          <div class="card" hidden="true">
+          <div class="card" id="moneyCard" hidden="true">
             <div class="card-body">
-              <h5 class="card-title display-5">{{families.[1].name}} family
-                 has <span id="money" style="color: rgb(87, 153, 87)">500</span> PLN.</h5>
+              <h5 class="card-title display-5" id="familyHeader"></h5>
+                 <span id="money" class="card-title display-5" style="color: rgb(87, 153, 87)">500</span> PLN.
               <p class="lead"> You can increase or decrease their amount of money by 50, clicking on + or - buttons.</p>
-              <button class="btn btn-outline-success"><span style="font-size:25px; text-decoration:solid">+</span></button>
-              <button class="btn btn-outline-danger"><span style="font-size:25px; text-decoration:solid">&ThinSpace;-&ThinSpace;</span></button>
+              <button type="button" id='addBtn'class="btn btn-outline-success"><span style="font-size:25px; text-decoration:solid">+</span></button>
+              <button type="button" id='subtractBtn'class="btn btn-outline-danger"><span style="font-size:25px; text-decoration:solid">&ThinSpace;-&ThinSpace;</span></button>
+              <span id="addedMoney" class="lead" style="color:rgb(82, 161, 57); font-size:25px;"></span>
+              <input type="hidden" id="hiddenMoney" name="budget" value="">
             </div>
           </div>
         </div>

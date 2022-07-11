@@ -72,4 +72,19 @@ router.get("/add-budget", async (req, res) => {
   res.render("add-budget", { families });
 });
 
+router.post("/add-budget", async (req, res) => {
+  let data = req.body;
+  data["family"] = data["family"].split(":")[0];
+  data["budget"] = parseInt(data["budget"]);
+  const family = await Family.findById(data.family);
+  family.budget += data.budget;
+  try {
+    await family.save();
+    return res.redirect("/admin");
+  } catch (err) {
+    console.log(err);
+    return res.redirect("/admin");
+  }
+});
+
 module.exports = router;
