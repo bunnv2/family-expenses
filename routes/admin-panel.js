@@ -37,7 +37,6 @@ router.get("/add-family", (req, res) => {
 });
 
 router.post("/add-family", async (req, res) => {
-  //add family to db
   if (req.body.budget < 0) {
     console.log("budget cannot be negative");
     console.log(req.body.budget);

@@ -1,0 +1,25 @@
+<div class="inner cover position-absolute top-50 start-50 translate-middle">
+  <div class="container center">
+    <div class="row">
+      <h1 class="display-4">You are at expenses panel!</h1>
+    </div>
+    <div class="row">
+      <form class="g-1" method="POST">
+        <h1 class="display-5" style="font-size: 24px;">C'mon, spend some money! 💸</h1>
+        <p class="lead">But first, who are you? 🛂</p>
+          <select class="form-select" id="familySelect" name="people">
+            <option value="">Choose yourself</option>
+            {{#each people}}
+              <option name="people" value="{{this._id}}">{{this.name}} {{this.lastName}}</option>
+            {{/each}}
+          </select>
+          <br>
+        </div>
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-outline-dark">Next</button>
+          <a class="btn btn-outline-dark" type="button" href="/admin">Back</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -46,3 +46,7 @@ function changeValue() {
   }
   hiddenMoney.value = moneyChange;
 }
+
+function hideExpenses() {
+  document.getElementById("hideButton").setAttribute("hidden", "true");
+}

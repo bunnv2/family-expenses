@@ -1,0 +1,71 @@
+<div class="inner cover position-absolute top-50 start-50 translate-middle">
+  {{#if cantSpend}}
+    <div class="alert alert-danger" role="alert" id="hideButton">
+      <button
+        name="hideButton"
+        class="btn btn-outline-danger"
+        type="button"
+        onclick="hideExpenses()"
+      >&times;</button>
+      &ThickSpace;
+      <span class="lead" style="font-size:24px;">You can't spend that much! You
+        dont have enough money.
+      </span>
+    </div>
+  {{/if}}
+  <div class="container center">
+    <div class="row">
+      <h1 class="display-4">You are at expenses panel!</h1>
+    </div>
+    <div class="row">
+      <form class="g-1" method="POST">
+        <h1 class="display-5" style="font-size: 24px;">C'mon, spend some money!
+          💸</h1>
+        <p class="lead">Write down your expenses and we will calculate your
+          total 💰
+          <br />
+          You have
+          <span style="color:rgb(112, 151, 60);">
+            {{#if family.budget includeZero=true}}
+              {{family.budget}}
+            {{else}}
+              0
+            {{/if}}$
+          </span>.
+        </p>
+        <div class="container">
+          <div class="row justify-content-start">
+            <div class="col-md">
+              <input
+                type="text"
+                class="form-control"
+                id="expenseName"
+                name="expenseName"
+                placeholder="Expense name"
+              />
+            </div>
+            <div class="col-md">
+              <input
+                type="number"
+                class="form-control"
+                id="expenseAmount"
+                name="expenseAmount"
+                placeholder="Cost"
+              />
+            </div>
+          </div>
+          <br />
+        </div>
+        <br />
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-outline-dark">Spend it!</button>
+          <a
+            class="btn btn-outline-dark"
+            type="button"
+            href="/expenses"
+          >Back</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
