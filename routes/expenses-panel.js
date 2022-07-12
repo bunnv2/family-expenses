@@ -3,7 +3,6 @@ const router = express.Router();
 const Family = require("../models/Family");
 const Person = require("../models/Person");
 const Expense = require("../models/Expenses");
-const { Bool } = require("mongoose/lib/schema/index");
 
 router.get("/", async (req, res) => {
   const people = await Person.find({}).lean();
@@ -43,13 +42,14 @@ router.get("/:id", async (req, res) => {
   const data = {};
   if (req.params.id == "...") return res.redirect("/expenses");
 
-  const person = await Person.findById(req.params.id);
+  const person = await Person.findById(req.params.id).lean();
   data.person = person;
   data.family = await Family.findById(person.Family).lean();
   data.cantSpend = false;
   if (req.query.cantSpend == "false") {
     data.cantSpend = true;
   }
+  data.expenses = await Expense.find({ person: person._id }).lean();
   res.render("your-expenses", data);
 });
 
