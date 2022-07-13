@@ -10,4 +10,15 @@
     <a style="text-decoration:none" href="/admin">here</a>
     to enter admin panel.
   </p>
+  <p class="text-center lead">
+    <a style="text-decoration:none" href="/account/login">login</a>
+    |
+    <a style="text-decoration:none" href="/account">register</a>
+  </p>
 </div>
+
+{{#if success}}
+  <script>
+    alert("Account created successfully!");
+  </script>
+{{/if}}

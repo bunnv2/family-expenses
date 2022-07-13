@@ -1,10 +1,14 @@
 express = require("express");
 const router = express.Router();
 
-// some routes
 router.get("/", (req, res) => {
-  //Serves the body of the page aka "main.handlebars" to the container //aka "main.handlebars"
-  res.render("home", { title: "my awesome app!!!!" });
+  let data = {};
+  let { success } = req.query;
+  if (success) {
+    data.success = true;
+  }
+  data.title = "my awesome app title";
+  res.render("home", data);
 });
-// -----------
+
 module.exports = router;

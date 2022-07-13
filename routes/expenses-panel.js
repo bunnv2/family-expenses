@@ -1,39 +1,39 @@
 express = require("express");
 const router = express.Router();
 const Family = require("../models/Family");
-const Person = require("../models/Person");
+const User = require("../models/User");
 const Expense = require("../models/Expenses");
 
 router.get("/", async (req, res) => {
-  const people = await Person.find({}).lean();
-  res.render("expenses-panel", { people });
+  const users = await User.find({}).lean();
+  res.render("expenses-panel", { users });
 });
 
 router.post("/", async (req, res) => {
-  const person = await Person.findById(req.body.people);
-  res.redirect(`/expenses/${person._id}`);
+  const user = await User.findById(req.body.user);
+  res.redirect(`/expenses/${user._id}`);
 });
 
 router.post("/:id", async (req, res) => {
-  const person = await Person.findById(req.params.id);
-  let family = await Family.findById(person.Family);
+  const user = await User.findById(req.params.id);
+  let family = await Family.findById(user.Family);
   if (!family.budget || family.budget - req.body.expenseAmount < 0) {
-    res.redirect(`/expenses/${person._id}?cantSpend=${false}`);
+    res.redirect(`/expenses/${user._id}?cantSpend=${false}`);
   } else {
     const newExpense = new Expense({
       name: req.body.expenseName,
       cost: req.body.expenseAmount,
       date: Date.now(),
-      person: person._id,
+      user: user._id,
     });
     family.budget -= req.body.expenseAmount;
     try {
       await family.save();
       await newExpense.save();
-      return res.redirect(`/expenses/${person._id}`);
+      return res.redirect(`/expenses/${user._id}`);
     } catch (err) {
       console.log(err);
-      return res.redirect(`/expenses/${person._id}`);
+      return res.redirect(`/expenses/${user._id}`);
     }
   }
 });
@@ -42,14 +42,14 @@ router.get("/:id", async (req, res) => {
   const data = {};
   if (req.params.id == "...") return res.redirect("/expenses");
 
-  const person = await Person.findById(req.params.id).lean();
-  data.person = person;
-  data.family = await Family.findById(person.Family).lean();
+  const user = await User.findById(req.params.id).lean();
+  data.user = user;
+  data.family = await Family.findById(user.Family).lean();
   data.cantSpend = false;
   if (req.query.cantSpend == "false") {
     data.cantSpend = true;
   }
-  data.expenses = await Expense.find({ person: person._id }).lean();
+  data.expenses = await Expense.find({ user: user._id }).lean();
   res.render("your-expenses", data);
 });
 

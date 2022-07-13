@@ -1,8 +1,12 @@
 express = require("express");
 const router = express.Router();
 const Family = require("../models/Family");
-const Person = require("../models/Person");
-
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const {
+  registerValidation,
+  loginValidation,
+} = require("../middleware/validation");
 // some routes
 router.get("/", (req, res) => {
   res.render("admin-panel");
@@ -11,19 +15,32 @@ router.get("/", (req, res) => {
 // ADD FAMILY MEMBERS ROUTES
 router.get("/add-members", async (req, res) => {
   const families = await Family.find({}).lean();
-  res.render("add-members", { families });
+  const error = req.query.error;
+  res.render("add-members", { families, error });
 });
 
 router.post("/add-members", async (req, res) => {
-  console.log(req.body);
+  if (req.body.family == "") {
+    return res.redirect("/admin/add-members" + "?error=familyNotFound");
+  }
   const family = await Family.findById(req.body.family);
-  const newPerson = new Person({
+  // VALIDATION
+  const { error } = registerValidation(req.body);
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+  const newUser = new User({
     name: req.body.name,
     lastName: req.body.lastName,
+    Password: hashedPassword,
     Family: family._id,
   });
   try {
-    await newPerson.save();
+    await newUser.save();
     return res.redirect("/admin");
   } catch (err) {
     console.log(err);
@@ -31,7 +48,7 @@ router.post("/add-members", async (req, res) => {
   }
 });
 
-// ADDING FAMILY ROUTES
+// ADDING FAMILY
 router.get("/add-family", (req, res) => {
   res.render("add-family");
 });
@@ -49,15 +66,33 @@ router.post("/add-family", async (req, res) => {
     budget: req.body.budget,
   });
 
-  const newPerson = new Person({
+  // VALIDATION
+
+  data = {
     name: req.body.name,
     lastName: req.body.lastName,
+    password: req.body.password,
+    family: newFamily._id,
+  };
+
+  const { error } = registerValidation(data);
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+  const newUser = new User({
+    name: req.body.name,
+    lastName: req.body.lastName,
+    Password: hashedPassword,
     Family: newFamily._id,
   });
 
   try {
     await newFamily.save();
-    await newPerson.save();
+    await newUser.save();
   } catch (err) {
     res.json({ message: err });
     return;
