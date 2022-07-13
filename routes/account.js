@@ -1,6 +1,6 @@
 express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const User = require("../models/User");
 const Family = require("../models/Family");
@@ -36,7 +36,9 @@ router.post("/user", async (req, res) => {
     return res.status(400).send(error.details[0].message);
   }
 
-  const emailExist = User.findOne({ email: email });
+  console.log(email);
+  // check if email exist
+  const emailExist = await User.findOne({ email: email });
   if (emailExist) {
     return res.status(400).send("Email already exists");
   }
@@ -74,7 +76,7 @@ router.post("/admin", async (req, res) => {
     return res.status(400).send(error.details[0].message);
   }
 
-  const emailExist = User.findOne({ email: req.body.email });
+  const emailExist = await User.findOne({ email: req.body.email });
   if (emailExist) {
     return res.status(400).send("Email already exists");
   }

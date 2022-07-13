@@ -1,19 +1,17 @@
 express = require("express");
 const router = express.Router();
 const Family = require("../models/Family");
+const auth = require("../middleware/verifyToken");
 const User = require("../models/User");
-const bcrypt = require("bcryptjs");
-const {
-  registerValidation,
-  loginValidation,
-} = require("../middleware/validation");
+const bcrypt = require("bcrypt");
+const { registerValidation } = require("../middleware/validation");
 // some routes
 router.get("/", (req, res) => {
   res.render("admin-panel");
 });
 
 // ADD FAMILY MEMBERS ROUTES
-router.get("/add-members", async (req, res) => {
+router.get("/add-members", auth, async (req, res) => {
   const families = await Family.find({}).lean();
   const error = req.query.error;
   res.render("add-members", { families, error });
@@ -30,7 +28,7 @@ router.post("/add-members", async (req, res) => {
     return res.status(400).send(error.details[0].message);
   }
 
-  const emailExist = User.findOne({ email: req.body.email });
+  const emailExist = await User.findOne({ email: req.body.email });
   if (emailExist) {
     return res.status(400).send("Email already exists");
   }
@@ -87,7 +85,7 @@ router.post("/add-family", async (req, res) => {
     return res.status(400).send(error.details[0].message);
   }
 
-  const emailExist = User.findOne({ email: req.body.email });
+  const emailExist = await User.findOne({ email: req.body.email });
   if (emailExist) {
     return res.status(400).send("Email already exists");
   }
