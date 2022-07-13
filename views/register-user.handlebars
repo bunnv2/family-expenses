@@ -17,7 +17,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="description">Lastname</label>
+          <label for="lastName">Lastname</label>
           <input
             type="text"
             required="True"
@@ -27,7 +27,17 @@
           />
         </div>
         <div class="form-group">
-          <label for="description">Password</label>
+          <label for="email">Email</label>
+          <input
+            type="email"
+            required="True"
+            class="form-control"
+            name="email"
+            placeholder="Enter email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
           <input
             type="password"
             required="True"
@@ -37,7 +47,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="description">Family</label>
+          <label for="family">Family</label>
           <select class="form-select" id="familySelect" name="family">
             <option value="new">New family</option>
             {{#each families}}

@@ -13,13 +13,15 @@ router.get("/", (req, res) => {
   res.render("register");
 });
 
+// REGISTER NEW USER
+
 router.get("/user", async (req, res) => {
   const families = await Family.find({}).lean();
   res.render("register-user", { families });
 });
 
 router.post("/user", async (req, res) => {
-  let { name, lastName, password, family } = req.body;
+  let { name, lastName, email, password, family } = req.body;
   if (family == "new") {
     family = new Family({
       name: req.body.lastName,
@@ -36,6 +38,7 @@ router.post("/user", async (req, res) => {
     name: name,
     lastName: lastName,
     Password: password,
+    email: email,
     Family: family._id,
   });
   try {
@@ -49,6 +52,8 @@ router.post("/user", async (req, res) => {
     res.redirect("/" + "?success=false");
   }
 });
+
+// REGISTER NEW ADMIN
 
 router.get("/admin", (req, res) => {
   res.render("register-admin");
@@ -68,6 +73,7 @@ router.post("/admin", async (req, res) => {
   const user = new User({
     name: req.body.name,
     lastName: req.body.lastName,
+    email: req.body.email,
     Password: hashedPassword,
     isAdmin: req.body.isAdmin,
   });

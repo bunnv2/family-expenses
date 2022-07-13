@@ -36,6 +36,7 @@ router.post("/add-members", async (req, res) => {
   const newUser = new User({
     name: req.body.name,
     lastName: req.body.lastName,
+    email: req.body.email,
     Password: hashedPassword,
     Family: family._id,
   });
@@ -86,6 +87,7 @@ router.post("/add-family", async (req, res) => {
   const newUser = new User({
     name: req.body.name,
     lastName: req.body.lastName,
+    email: req.body.email,
     Password: hashedPassword,
     Family: newFamily._id,
   });
