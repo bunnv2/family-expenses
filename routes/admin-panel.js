@@ -30,6 +30,11 @@ router.post("/add-members", async (req, res) => {
     return res.status(400).send(error.details[0].message);
   }
 
+  const emailExist = User.findOne({ email: req.body.email });
+  if (emailExist) {
+    return res.status(400).send("Email already exists");
+  }
+
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
@@ -73,12 +78,18 @@ router.post("/add-family", async (req, res) => {
     name: req.body.name,
     lastName: req.body.lastName,
     password: req.body.password,
+    email: req.body.email,
     family: newFamily._id,
   };
 
   const { error } = registerValidation(data);
   if (error) {
     return res.status(400).send(error.details[0].message);
+  }
+
+  const emailExist = User.findOne({ email: req.body.email });
+  if (emailExist) {
+    return res.status(400).send("Email already exists");
   }
 
   const salt = await bcrypt.genSalt(10);

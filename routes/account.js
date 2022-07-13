@@ -22,6 +22,7 @@ router.get("/user", async (req, res) => {
 
 router.post("/user", async (req, res) => {
   let { name, lastName, email, password, family } = req.body;
+
   if (family == "new") {
     family = new Family({
       name: req.body.lastName,
@@ -34,6 +35,12 @@ router.post("/user", async (req, res) => {
     console.log(error.details[0].message);
     return res.status(400).send(error.details[0].message);
   }
+
+  const emailExist = User.findOne({ email: email });
+  if (emailExist) {
+    return res.status(400).send("Email already exists");
+  }
+
   const user = new User({
     name: name,
     lastName: lastName,
@@ -67,6 +74,11 @@ router.post("/admin", async (req, res) => {
     return res.status(400).send(error.details[0].message);
   }
 
+  const emailExist = User.findOne({ email: req.body.email });
+  if (emailExist) {
+    return res.status(400).send("Email already exists");
+  }
+
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
@@ -86,5 +98,5 @@ router.post("/admin", async (req, res) => {
     res.redirect("/");
   }
 });
-// -----------
+
 module.exports = router;
