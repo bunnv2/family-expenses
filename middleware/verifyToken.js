@@ -1,15 +1,30 @@
 const jwt = require("jsonwebtoken");
 
 function auth(req, res, next) {
-  const token = req.header("auth-token");
-  if (!token) return res.status(401).send("Access denied. No token provided.");
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).redirect("/login");
+  }
   try {
-    const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-    req.user = verified;
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    req.user = decoded;
+    req.headers.user = decoded;
     next();
   } catch (err) {
-    res.status(400).send("Invalid token.");
+    return res.status(401).redirect("/login");
   }
 }
 
-module.exports = auth;
+function publicLogged(req, res, next) {
+  const token = req.cookies.token;
+  try {
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    req.user = decoded;
+    req.headers.user = decoded;
+    next();
+  } catch (err) {
+    next();
+  }
+}
+
+module.exports = { auth, publicLogged };

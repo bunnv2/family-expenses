@@ -1,23 +1,30 @@
 express = require("express");
 const router = express.Router();
 const Family = require("../models/Family");
-const auth = require("../middleware/verifyToken");
+const { auth } = require("../middleware/verifyToken");
+
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const { registerValidation } = require("../middleware/validation");
 // some routes
-router.get("/", (req, res) => {
-  res.render("admin-panel");
+router.get("/", auth, (req, res) => {
+  let data = {};
+  data.user = req.user;
+  res.render("admin-panel", data);
 });
 
 // ADD FAMILY MEMBERS ROUTES
 router.get("/add-members", auth, async (req, res) => {
+  let data = {};
+  data.user = req.user;
   const families = await Family.find({}).lean();
+  data.families = families;
   const error = req.query.error;
-  res.render("add-members", { families, error });
+  data.error = error;
+  res.render("add-members", data);
 });
 
-router.post("/add-members", async (req, res) => {
+router.post("/add-members", auth, async (req, res) => {
   if (req.body.family == "") {
     return res.redirect("/admin/add-members" + "?error=familyNotFound");
   }
@@ -53,14 +60,15 @@ router.post("/add-members", async (req, res) => {
 });
 
 // ADDING FAMILY
-router.get("/add-family", (req, res) => {
-  res.render("add-family");
+router.get("/add-family", auth, (req, res) => {
+  let data = {};
+  data.user = req.user;
+  res.render("add-family", data);
 });
 
-router.post("/add-family", async (req, res) => {
+router.post("/add-family", auth, async (req, res) => {
   if (req.body.budget < 0) {
     console.log("budget cannot be negative");
-    console.log(req.body.budget);
     return res.render("add-family", {
       message: "Budget cannot be negative",
     });
@@ -112,12 +120,15 @@ router.post("/add-family", async (req, res) => {
 });
 
 // ADDING FAMILY BUDGET
-router.get("/add-budget", async (req, res) => {
+router.get("/add-budget", auth, async (req, res) => {
+  let data = {};
+  data.user = req.user;
   const families = await Family.find({}).lean();
-  res.render("add-budget", { families });
+  data.families = families;
+  res.render("add-budget", data);
 });
 
-router.post("/add-budget", async (req, res) => {
+router.post("/add-budget", auth, async (req, res) => {
   let data = req.body;
   data["family"] = data["family"].split(":")[0];
   data["budget"] = parseInt(data["budget"]);

@@ -2,6 +2,7 @@ express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 
+const { publicLogged, auth } = require("../middleware/verifyToken");
 const User = require("../models/User");
 const Family = require("../models/Family");
 const {
@@ -9,15 +10,22 @@ const {
   registerValidation,
 } = require("../middleware/validation");
 
-router.get("/", (req, res) => {
-  res.render("register");
+router.get("/", publicLogged, (req, res) => {
+  let data = {};
+  data.user = req.user;
+  if (req.user) return res.redirect("/");
+  res.render("register", data);
 });
 
 // REGISTER NEW USER
 
-router.get("/user", async (req, res) => {
+router.get("/user", publicLogged, async (req, res) => {
+  let data = {};
+  data.user = req.user;
+  if (req.user) return res.redirect("/");
   const families = await Family.find({}).lean();
-  res.render("register-user", { families });
+  data.families = families;
+  res.render("register-user", data);
 });
 
 router.post("/user", async (req, res) => {
@@ -36,8 +44,6 @@ router.post("/user", async (req, res) => {
     return res.status(400).send(error.details[0].message);
   }
 
-  console.log(email);
-  // check if email exist
   const emailExist = await User.findOne({ email: email });
   if (emailExist) {
     return res.status(400).send("Email already exists");
@@ -64,8 +70,11 @@ router.post("/user", async (req, res) => {
 
 // REGISTER NEW ADMIN
 
-router.get("/admin", (req, res) => {
-  res.render("register-admin");
+router.get("/admin", publicLogged, (req, res) => {
+  let data = {};
+  data.user = req.user;
+  if (req.user) return res.redirect("/");
+  res.render("register-admin", data);
 });
 
 router.post("/admin", async (req, res) => {

@@ -3,10 +3,14 @@ const router = express.Router();
 const Family = require("../models/Family");
 const User = require("../models/User");
 const Expense = require("../models/Expenses");
+const { publicLogged, auth } = require("../middleware/verifyToken");
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
+  let data = {};
+  data.user = req.user;
   const users = await User.find({}).lean();
-  res.render("expenses-panel", { users });
+  data.users = users;
+  res.render("expenses-panel", data);
 });
 
 router.post("/", async (req, res) => {
@@ -38,8 +42,9 @@ router.post("/:id", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
-  const data = {};
+router.get("/:id", auth, async (req, res) => {
+  let data = {};
+  data.user = req.user;
   if (req.params.id == "...") return res.redirect("/expenses");
 
   const user = await User.findById(req.params.id).lean();

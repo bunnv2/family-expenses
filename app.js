@@ -11,6 +11,10 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// cookies setup
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 // view engine setup
 const { engine } = require("express-handlebars");
 app.engine("handlebars", engine());
