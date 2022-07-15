@@ -5,9 +5,17 @@
     <a style="text-decoration:none" href="/expenses">here</a>
     to enter expenses management.
   </p>
-  <p class="text-center lead">
-    Click
-    <a style="text-decoration:none" href="/admin">here</a>
-    to enter admin panel.
-  </p>
+  {{#if user.isAdmin}}
+    <p class="text-center lead">
+      Click
+      <a style="text-decoration:none" href="/admin">here</a>
+      to enter admin panel.
+    </p>
+  {{/if}}
 </div>
+
+{{#if success}}
+  <script>
+    alert("Account created successfully!");
+  </script>
+{{/if}}

@@ -13,7 +13,7 @@ const FamilySchema = new mongoose.Schema({
 });
 
 FamilySchema.post("remove", function (next) {
-  Person.deleteMany({ Family: this._id }, function (err) {
+  User.deleteMany({ Family: this._id }, function (err) {
     if (err) {
       console.log(err);
     }

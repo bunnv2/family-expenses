@@ -16,7 +16,23 @@
     />
   </head>
   <body class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    {{#if user}}
+      <div class="mb-3">
+        <h5 class="display-4" style="font-size: 20;">hi
+          {{user.name}}
+          |
+          <a href="/logout" style="text-decoration:none">logout</a></h5>
+      </div>
+    {{else}}
+      <div class="mb-3">
+        <h5 class="display-4" style="font-size: 20;">
+          <a href="/login" style="text-decoration:none">login</a>
+          |
+          <a href="/account" style="text-decoration:none">register</a></h5>
+      </div>
+    {{/if}}
     <div style="margin: 5%;">
+      {{! display user from header }}
       {{{body}}}
     </div>
     <script
