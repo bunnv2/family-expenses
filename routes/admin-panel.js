@@ -10,6 +10,7 @@ const { registerValidation } = require("../middleware/validation");
 router.get("/", auth, (req, res) => {
   let data = {};
   data.user = req.user;
+  if (!data.user.isAdmin) return res.redirect("/");
   res.render("admin-panel", data);
 });
 
@@ -17,6 +18,7 @@ router.get("/", auth, (req, res) => {
 router.get("/add-members", auth, async (req, res) => {
   let data = {};
   data.user = req.user;
+  if (!data.user.isAdmin) return res.redirect("/");
   const families = await Family.find({}).lean();
   data.families = families;
   const error = req.query.error;
@@ -25,6 +27,8 @@ router.get("/add-members", auth, async (req, res) => {
 });
 
 router.post("/add-members", auth, async (req, res) => {
+  if (!req.user.isAdmin) return res.redirect("/");
+
   if (req.body.family == "") {
     return res.redirect("/admin/add-members" + "?error=familyNotFound");
   }
@@ -63,10 +67,14 @@ router.post("/add-members", auth, async (req, res) => {
 router.get("/add-family", auth, (req, res) => {
   let data = {};
   data.user = req.user;
+  if (!data.user.isAdmin) return res.redirect("/");
+
   res.render("add-family", data);
 });
 
 router.post("/add-family", auth, async (req, res) => {
+  if (!req.user.isAdmin) return res.redirect("/");
+
   if (req.body.budget < 0) {
     console.log("budget cannot be negative");
     return res.render("add-family", {
@@ -121,6 +129,7 @@ router.post("/add-family", auth, async (req, res) => {
 
 // ADDING FAMILY BUDGET
 router.get("/add-budget", auth, async (req, res) => {
+  if (!req.user.isAdmin) return res.redirect("/");
   let data = {};
   data.user = req.user;
   const families = await Family.find({}).lean();
@@ -129,6 +138,7 @@ router.get("/add-budget", auth, async (req, res) => {
 });
 
 router.post("/add-budget", auth, async (req, res) => {
+  if (!req.user.isAdmin) return res.redirect("/");
   let data = req.body;
   data["family"] = data["family"].split(":")[0];
   data["budget"] = parseInt(data["budget"]);
