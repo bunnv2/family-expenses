@@ -15,7 +15,6 @@ router.get("/", publicLogged, (req, res) => {
   if (success) {
     data.success = true;
   }
-  data.title = "my awesome app title";
   res.render("home", data);
 });
 
