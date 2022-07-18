@@ -16,6 +16,21 @@ router.get("/", auth, async (req, res) => {
     data.cantSpend = true;
   }
   data.expenses = await Expense.find({ user: user._id }).lean();
+  const family = await Family.findById(user.Family);
+  const familyMembers = await User.find({ Family: family._id }).lean();
+  const familyExpenses = [];
+  for (let i = 0; i < familyMembers.length; i++) {
+    let memberExpenses = await Expense.find({
+      user: familyMembers[i]._id,
+    }).lean();
+
+    for (let j = 0; j < memberExpenses.length; j++) {
+      memberExpenses[j].user = familyMembers[i].name;
+    }
+
+    familyExpenses.push(...memberExpenses);
+  }
+  data.familyExpenses = familyExpenses;
   res.render("your-expenses", data);
 });
 

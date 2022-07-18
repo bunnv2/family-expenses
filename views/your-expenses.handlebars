@@ -67,7 +67,7 @@
             data-toggle="modal"
             data-target="#exampleModalCenter"
           >
-            Show all expenses
+            Show your expenses
           </button>
           <a
             class="btn btn-outline-dark"
@@ -81,7 +81,7 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal your expenses -->
 <div
   class="modal fade"
   id="exampleModalCenter"
@@ -97,9 +97,12 @@
         </button>
       </div>
       <div class="modal-body">
-        {{#each expenses}}
+        {{#each familyExpenses}}
           <div class="container">
             <div class="row justify-content-start">
+              <div class="col-md">
+                <span class="lead" id="expense-name">{{this.user}} {{this.user.lastName}}</span>
+              </div>
               <div class="col-md">
                 <span class="lead" id="expense-name">{{this.name}}</span>
               </div>
