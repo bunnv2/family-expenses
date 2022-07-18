@@ -8,6 +8,7 @@ const { auth } = require("../middleware/verifyToken");
 router.get("/", auth, async (req, res) => {
   let data = {};
   const user = req.user;
+  if (req.user.isAdmin) return res.redirect("/");
   data.user = req.user;
   data.family = await Family.findById(user.Family).lean();
   data.cantSpend = false;
@@ -20,6 +21,7 @@ router.get("/", auth, async (req, res) => {
 
 router.post("/", auth, async (req, res) => {
   const user = req.user;
+  if (req.user.isAdmin) return res.redirect("/");
   let family = await Family.findById(user.Family);
   if (!family.budget || family.budget - req.body.expenseAmount < 0) {
     res.redirect(`/expenses?cantSpend=${false}`);

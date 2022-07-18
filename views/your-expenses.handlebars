@@ -5,7 +5,7 @@
         name="hideButton"
         class="btn btn-outline-danger"
         type="button"
-        onclick="hideExpenses()"
+        onclick="hide()"
       >&times;</button>
       &ThickSpace;
       <span class="lead" style="font-size:24px;">You can't spend that much! You
@@ -59,9 +59,10 @@
         </div>
         <br />
         <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-outline-dark">Spend it!</button>
+          <button type="submit" class="btn btn-outline-dark" id="spend-button">Spend it!</button>
           <button
             type="button"
+            id="show-button"
             class="btn btn-outline-dark"
             data-toggle="modal"
             data-target="#exampleModalCenter"
@@ -72,6 +73,7 @@
             class="btn btn-outline-dark"
             type="button"
             href="/"
+            id = "back-button"
           >Back</a>
         </div>
       </form>
@@ -99,10 +101,10 @@
           <div class="container">
             <div class="row justify-content-start">
               <div class="col-md">
-                <span class="lead">{{this.name}}</span>
+                <span class="lead" id="expense-name">{{this.name}}</span>
               </div>
               <div class="col-md">
-                <span class="lead">{{this.cost}}$</span>
+                <span class="lead" id="expense-amount">{{this.cost}}$</span>
               </div>
               <div class="col-md">
                 <span class="lead">{{this.date}}$</span>
@@ -116,6 +118,7 @@
         <button
           type="button"
           class="btn btn-secondary"
+          id="close-button"
           data-dismiss="modal"
         >Close</button>
       </div>

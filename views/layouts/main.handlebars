@@ -19,16 +19,32 @@
     {{#if user}}
       <div class="mb-3">
         <h5 class="display-4" style="font-size: 20;">hi
-          {{user.name}}
+          <span id="userName">{{user.name}}</span>
+          -
+          <a href="/" id="home-link" style="text-decoration:none">home</a>
           |
-          <a href="/logout" style="text-decoration:none">logout</a></h5>
+          <a
+            href="/logout"
+            id="logout-link"
+            style="text-decoration:none"
+          >logout</a></h5>
       </div>
     {{else}}
       <div class="mb-3">
         <h5 class="display-4" style="font-size: 20;">
-          <a href="/login" style="text-decoration:none">login</a>
+          <a href="/" id="home-link" style="text-decoration:none">home</a>
           |
-          <a href="/account" style="text-decoration:none">register</a></h5>
+          <a
+            href="/login"
+            id="login-link"
+            style="text-decoration:none"
+          >login</a>
+          |
+          <a
+            href="/account"
+            id="register-link"
+            style="text-decoration:none"
+          >register</a></h5>
       </div>
     {{/if}}
     <div style="margin: 5%;">

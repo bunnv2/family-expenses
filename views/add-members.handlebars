@@ -59,8 +59,17 @@
         </div>
         <br />
         <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-outline-dark">Add Member</button>
-          <a class="btn btn-outline-dark" type="button" href="/admin">Back</a>
+          <button
+            type="submit"
+            class="btn btn-outline-dark"
+            id="add-family-member-button"
+          >Add Member</button>
+          <a
+            class="btn btn-outline-dark"
+            type="button"
+            href="/admin"
+            id="back-button"
+          >Back</a>
         </div>
       </form>
     </div>
@@ -72,7 +81,7 @@
       name="hideButton"
       class="btn btn-outline-danger"
       type="button"
-      onclick="hideExpenses()"
+      onclick="hide()"
     >&times;</button>
     &ThickSpace;
     <span class="lead" style="font-size:24px;">Something went wrong.
